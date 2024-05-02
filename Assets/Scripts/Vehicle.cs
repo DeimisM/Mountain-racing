@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Vehicle : MonoBehaviour
@@ -13,9 +14,15 @@ public class Vehicle : MonoBehaviour
     public float drag = 0.1f;
 
     public bool isAccelerating;
-    
+
+    public ParticleSystem driftSmoke;
+    public TrailRenderer driftTrail1;
+    public TrailRenderer driftTrail2;
+
     public AnimationCurve pitchCurve;
     public AnimationCurve rotateSpeedCurve;
+
+    public Transform[] wheels;
 
     Rigidbody rb;
     AudioSource engineSound;
@@ -39,12 +46,27 @@ public class Vehicle : MonoBehaviour
         //drag
         rb.velocity += -transform.right * localVelocity.x * sideDrag * Time.deltaTime;
 
+        print(localVelocity);
 
-        if (Mathf.Abs(localVelocity.normalized.x) > 1f)
+        // Check for drifting
+        bool isDrifting = Mathf.Abs(localVelocity.x) > 1f;
+
+        // drifting
+        if (isDrifting && isAccelerating)
         {
             print("drift");
+            driftSmoke.gameObject.SetActive(true);
+            driftTrail1.gameObject.SetActive(true);
+            driftTrail2.gameObject.SetActive(true);
+        }
+        else
+        {
+            driftSmoke.gameObject.SetActive(false);
+            driftTrail1 .gameObject.SetActive(false);
+            driftTrail2.gameObject.SetActive(false);
         }
 
+        
         isAccelerating = false;
     }
 
