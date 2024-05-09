@@ -72,7 +72,7 @@ public class Vehicle : MonoBehaviour
 
     public void Steer(float value)
     {
-        value = Mathf.Clamp();
+        value = Mathf.Clamp(value, -1, 1);
 
         transform.Rotate(0, value * rotateSpeed * rotateSpeedCurve.Evaluate(speedRatio) * Time.deltaTime, 0);
     }
