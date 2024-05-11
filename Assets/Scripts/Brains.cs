@@ -5,6 +5,7 @@ public class Brains : MonoBehaviour
     Vehicle vehicle;
     Path path;
     Vector3 targetPos;
+    public float minTurnAngle = 2.5f;
 
     void Start()
     {
@@ -19,6 +20,8 @@ public class Brains : MonoBehaviour
     {
         Debug.DrawLine(transform.position, targetPos, Color.red);
 
+        float distanceToTarget = Vector3.Distance(transform.position, targetPos);
+
         if(Vector3.Distance(transform.position, targetPos) < 3)
         {
             targetPos = path.GetNextPoint(transform.position);
@@ -26,7 +29,11 @@ public class Brains : MonoBehaviour
 
         var angle = Vector3.SignedAngle(transform.forward, targetPos - transform.position, Vector3.up);
 
-        vehicle.Steer(angle);
+        if (Mathf.Abs(angle) > minTurnAngle)
+        {
+            vehicle.Steer(angle);
+        }
+        
         //vehicle.Steer(Mathf.PerlinNoise1D(Time.time) * 2 - 1);
         vehicle.Accelerate();
     }

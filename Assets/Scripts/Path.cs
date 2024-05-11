@@ -6,7 +6,7 @@ public class Path : MonoBehaviour
 {
     public Transform[] points;
 
-    void Start()
+    void Awake()
     {
         points = GetComponentsInChildren<Transform>()[1..];
     }

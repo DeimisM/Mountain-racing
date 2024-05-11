@@ -12,6 +12,7 @@ public class Vehicle : MonoBehaviour
     public float reverseAcceleration = 0.8f;
     public float sideDrag = 1f;
     public float drag = 0.1f;
+    public float speedRatio;
 
     public bool isAccelerating;
 
@@ -26,7 +27,6 @@ public class Vehicle : MonoBehaviour
 
     Rigidbody rb;
     AudioSource engineSound;
-    float speedRatio;
 
     void Start()
     {
@@ -74,7 +74,7 @@ public class Vehicle : MonoBehaviour
     {
         value = Mathf.Clamp(value, -1, 1);
 
-        transform.Rotate(0, value * rotateSpeed * rotateSpeedCurve.Evaluate(speedRatio) * Time.deltaTime, 0);
+        transform.Rotate(0, value * rotateSpeed * rotateSpeedCurve.Evaluate(speedRatio) * Mathf.Sign(localVelocity.z) * Time.deltaTime, 0);
     }
 
     public void Accelerate()
